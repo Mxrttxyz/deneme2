@@ -1,74 +1,105 @@
-import streamlit as st
-import random
+import { useState } from 'react';
+import { ClipboardCopy } from 'lucide-react';
 
-# --- SENİN ÖZEL SEVGİ NEDENLERİN ---
-# Buradaki listeye, sevgilini neden sevdiğini anlatan cümleleri ekleyebilirsin.
-# Her bir nedeni tırnak içine al ve aralarına virgül koymayı unutma.
-# Ne kadar çok eklersen, o kadar farklı seçenek çıkar!
-sevgi_nedenleri = [
-    "Gülüşünü seviyorum, bana dünyaları veriyor.",
-    "Yanımda olman, bana her zaman güç veriyor.",
-    "Zekana hayranım, her konuştuğumuzda yeni şeyler öğreniyorum.",
-    "En sevdiğim rengin senin gözlerinin rengi olması.",
-    "Bana her zaman destek olmanı ve beni motive etmeni seviyorum.",
-    "Küçük sürprizlerin ve düşünceli hallerin beni mutlu ediyor.",
-    "Seninle geçirdiğim her anın değerli olması.",
-    "Bana hissettirdiğin güven duygusu.",
-    "Birlikte saçmalamayı ve kahkahalar atmayı seviyorum.",
-    "Hayallerime inanmanı ve beni desteklemeni seviyorum.",
-    "Sabah uyandığımda aklıma ilk gelen kişi olman.",
-    "Her zaman beni dinlemen ve anlamaya çalışman.",
-    "En zor zamanlarımda bile yanımda olman.",
-    "Seninle olmak, en sevdiğim yer olmak demek.",
-    "Hayatıma kattığın pozitif enerji ve neşe.",
-    "Bana hissettirdiğin eşsiz aşk duygusu.",
-    "Her detayı düşünerek beni şaşırtman.",
-    "Sesini duymak, günümü güzelleştiriyor.",
-    "Yanında kendim olabildiğim tek yer.",
-    "Birlikte sessizliğin bile anlamlı olması.",
-    "En kötü günümde bile beni güldürebilmen.",
-    "Sana her baktığımda kalbimin hızlı atması.",
-    "Birlikte kahve içmek bile seninle güzel.",
-    "Hayatıma anlam katmanı seviyorum.",
-    "Bana kendimi özel hissettirmen.",
-    "Her zorluğa seninle göğüs gerebileceğimi bilmem.",
-    "Senden her gün yeni bir şey öğreniyorum."
-    # Buraya kendi özel nedenlerini ekle!
-    # Örnek: "En sevdiğim yemeği mükemmel yapmanı seviyorum.",
-    # Örnek: "Birlikte izlediğimiz o filmi hatırlamanı seviyorum.",
-    # Örnek: "Beni sabırla dinlemeni seviyorum.",
-]
+// Main application component
+export default function App() {
+  // State to track the copy action
+  const [copiedText, setCopiedText] = useState('');
+  
+  // URL for the profile picture from the uploaded file
+  const profilePicUrl = "10478263903257060033.jpg";
 
-# --- STREAMLIT UYGULAMASI ---
+  // Function to copy text to the clipboard
+  const copyToClipboard = (textToCopy) => {
+    try {
+      // execCommand method works better within iframes
+      const el = document.createElement('textarea');
+      el.value = textToCopy;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
 
-# Sayfa ayarları
-st.set_page_config(layout="centered", page_title="Senin İçin Bir Neden", page_icon="❤️")
+      setCopiedText(textToCopy);
+      setTimeout(() => setCopiedText(''), 1500); // Hide the message after 1.5 seconds
 
-st.title("Sevgilim, Seni Neden Mi Seviyorum? İşte Bir Neden:")
-st.markdown("---")
+    } catch (err) {
+      console.error('Copying failed', err);
+    }
+  };
+  
+  return (
+    <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="flex flex-col items-center text-center max-w-lg w-full">
+        
+        {/* Profile photo */}
+        <img
+          src={profilePicUrl}
+          alt="" 
+          className="w-36 h-36 rounded-full border-4 border-[#8B0000] mb-6 shadow-lg"
+          style={{ filter: 'contrast(1.2) saturate(1.2) brightness(1.1)' }}
+        />
 
-# Oturum durumu (Hafıza) - Hangi nedenin gösterildiğini takip etmek için
-if 'current_reason_index' not in st.session_state:
-    st.session_state.current_reason_index = None # Henüz bir neden gösterilmedi
+        {/* Name and description */}
+        <h1 className="text-4xl md:text-5xl font-bold mb-2 text-[#FF0000]" style={{ textShadow: '0 0 10px #ff0000' }}>
+          Mxrtt
+        </h1>
+        <p className="text-lg md:text-xl font-medium mb-8 text-[#FF0000]">
+          I don't know what to write here, I was just experimenting and writing code, by the way, my closest friend Ömxr is a complete idiot :D
+        </p>
+        
 
-# Butona basıldığında çalışacak fonksiyon
-def get_random_reason():
-    # Rastgele bir neden seç ve oturum hafızasına kaydet
-    st.session_state.current_reason_index = random.choice(range(len(sevgi_nedenleri)))
+        {/* Horizontal line */}
+        <div className="w-4/5 h-px bg-gray-500 my-8"></div>
 
-# Buton
-st.button("Yeni Bir Neden Keşfet ❤️", on_click=get_random_reason, use_container_width=True)
+        {/* Icons and text */}
+        <div className="flex justify-center items-center gap-6">
+          {/* Discord Icon */}
+          <div 
+            onClick={() => copyToClipboard("reverland.f")}
+            className="p-4 rounded-full transition-all transform hover:scale-110 cursor-pointer shadow-lg"
+            style={{ backgroundColor: '#000', textShadow: '0 0 15px #ffffff, 0 0 10px #ffffff' }}
+            title="Copy Discord" // Tooltip added
+          >
+            {/* Discord icon image from uploaded file, with cache-busting */}
+            <img 
+              src={`image_292404.png?v=${new Date().getTime()}`} 
+              alt="Discord Icon" 
+              className="w-12 h-12 rounded-full"
+            />
+          </div>
 
-st.markdown("---")
+          {/* Spotify Icon */}
+          <a 
+            href="https://open.spotify.com/user/31kveias72kw5d7ubqjb6jitvexq?si=341bb7f37393429f" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="p-4 rounded-full transition-all transform hover:scale-110 cursor-pointer shadow-lg"
+            style={{ backgroundColor: '#000', textShadow: '0 0 15px #ffffff, 0 0 10px #ffffff' }}
+            title="Go to Spotify" // Tooltip added
+          >
+            {/* Spotify icon image */}
+            <img 
+              src="image_276d88.png" 
+              alt="Spotify Icon" 
+              className="w-12 h-12 rounded-full"
+              style={{ filter: 'brightness(2) contrast(1.5)' }}
+            />
+          </a>
+        </div>
 
-# Nedeni gösterme alanı
-if st.session_state.current_reason_index is not None:
-    st.markdown(f"## {sevgi_nedenleri[st.session_state.current_reason_index]}")
-    st.markdown("---")
-    st.markdown("Umarım bu küçük jest sana sevgimi bir kez daha hatırlatır. Seni seviyorum! 🥰")
-else:
-    st.info("Yukarıdaki butona basarak sana olan sevgimin nedenlerinden birini keşfedebilirsin!")
+        {/* Copied message */}
+        {copiedText && (
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 p-3 px-6 rounded-full bg-gray-700 text-white text-sm shadow-xl transition-all duration-300">
+            Copied: {copiedText} <ClipboardCopy size={16} className="inline ml-2" />
+          </div>
+        )}
+      </div>
 
-# Uygulamanın en altına küçük bir not
-st.markdown("---")
-st.caption("Bu uygulama, sana özel olarak kodlandı. 💖")
+      {/* Footer / Developer Alias */}
+      <footer className="text-center text-gray-500 text-sm mt-8 pb-4 w-full">
+        <p>Mxrtt.dev</p>
+      </footer>
+    </div>
+  );
+}
